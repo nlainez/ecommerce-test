@@ -10,45 +10,28 @@ import {
   CSSTransition,
   TransitionGroup
 } from 'react-transition-group';
-import * as uuid from 'uuid';
 import { connect } from 'react-redux';
-import { getItems } from '../actions/itemActions';
+import {
+  getItems,
+  deleteItem
+} from '../actions/itemActions';
 import PropTypes from 'prop-types';
 
 class LocationList extends Component {
-  // state = {
-  //   items: [
-  //     { id: uuid.v1(), location: '1234,5432' },
-  //     { id: uuid.v1(), location: '4534,5212' },
-  //     { id: uuid.v1(), location: '4321,5421' }
-  //   ]
-  // };
-
   componentDidMount() {
     this.props.getItems();
+  }
+
+  onDeleteClick = (id) => {
+    this.props.deleteItem(id);
   }
 
   render() {
     const { items } = this.props.item;
 
     return (
-      <Container>
-        <Button
-          color="dark"
-          style={{marginBottom: '2rem'}}
-          onClick={() => {
-            const location = prompt('Enter location');
-            if (location) {
-              this.setState(state => ({
-                  items: [...state.items, { id: uuid.v1(), location: location }]
-                })
-              );
-            }
-          }}
-        >
-          Set Location
-        </Button>
-
+      <div>
+        <br />
         <ListGroup>
           <TransitionGroup className="shopping-list">
             {items.map(({ id, location}) => (
@@ -58,11 +41,7 @@ class LocationList extends Component {
                     className="remove-btn"
                     color="danger"
                     size="sm"
-                    onClick={() => {
-                      this.setState(state => ({
-                        items: state.items.filter(item => item.id !== id)
-                      }));
-                    }}                   
+                    onClick={this.onDeleteClick.bind(this, id)}                   
                   >
                     &times;
                   </Button>
@@ -72,7 +51,7 @@ class LocationList extends Component {
             ))}
           </TransitionGroup>
         </ListGroup>
-      </Container>
+      </div>
     );
   }
 }
@@ -86,4 +65,7 @@ const mapStateToProps = (state) => ({
   item: state.item
 });
 
-export default connect(mapStateToProps, { getItems })(LocationList);
+export default connect(mapStateToProps, {
+  getItems,
+  deleteItem
+})(LocationList);
