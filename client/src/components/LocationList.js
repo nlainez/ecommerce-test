@@ -11,18 +11,26 @@ import {
   TransitionGroup
 } from 'react-transition-group';
 import * as uuid from 'uuid';
+import { connect } from 'react-redux';
+import { getItems } from '../actions/itemActions';
+import PropTypes from 'prop-types';
 
 class LocationList extends Component {
-  state = {
-    items: [
-      { id: uuid.v1(), location: '1234,5432' },
-      { id: uuid.v1(), location: '4534,5212' },
-      { id: uuid.v1(), location: '4321,5421' }
-    ]
-  };
+  // state = {
+  //   items: [
+  //     { id: uuid.v1(), location: '1234,5432' },
+  //     { id: uuid.v1(), location: '4534,5212' },
+  //     { id: uuid.v1(), location: '4321,5421' }
+  //   ]
+  // };
+
+  componentDidMount() {
+    this.props.getItems();
+  }
 
   render() {
-    const { items } = this.state;
+    const { items } = this.props.item;
+
     return (
       <Container>
         <Button
@@ -69,4 +77,13 @@ class LocationList extends Component {
   }
 }
 
-export default LocationList;
+LocationList.propTypes = {
+  getItems: PropTypes.func.isRequired,
+  item: PropTypes.object.isRequired
+};
+
+const mapStateToProps = (state) => ({
+  item: state.item
+});
+
+export default connect(mapStateToProps, { getItems })(LocationList);
