@@ -34,14 +34,14 @@ class LocationList extends Component {
         <br />
         <ListGroup>
           <TransitionGroup className="shopping-list">
-            {items.map(({ id, location}) => (
-              <CSSTransition key={id} timeout={500} classNames="fade">
+            {items.map(({ _id, location }) => (
+              <CSSTransition key={_id} timeout={500} classNames="fade">
                 <ListGroupItem>
                   <Button
                     className="remove-btn"
                     color="danger"
                     size="sm"
-                    onClick={this.onDeleteClick.bind(this, id)}                   
+                    onClick={this.onDeleteClick.bind(this, _id)}                   
                   >
                     &times;
                   </Button>
